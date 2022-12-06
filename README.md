@@ -49,6 +49,24 @@ Algorithm MST Branch and Bound for TSP
 &nbsp; &nbsp; &nbsp; push $E'\setminus\{e_1}, E'\setminus\{e_2\}, E'\setminus\{e_3\}$ onto $S$<br/>
 &nbsp; **end while**<br/>
 
+In general, the algorithm has a complexity of $O(|E|\log(|E|)3^n)$. The exponential term comes from the tree search and the fact that TSP is NP-Complete, and the $|E|\log(|E|)$ is the complexity of the Kruskal MST algorithm. When the graph is full, say $n=|V|$, then the complexity of the algorithm becomes $O(n^2\log(n)3^n)$. Since we only split into three branches no matter how many edges connected to the  vertex, the time complexity of this algorithm becomes exponential.
+
+I perform a simple experiment by creating the random graph and find the solution repeatedly, and the average of 4 experimental results are shown in the following tables. We notice that the execution time of the algorithm increases exponentially, and the 9 vertex graph takes forever to execute due to its exponential nature.
+
+The execution time of Branch and Bound algorithm.
+num of vertices | the avg time (milliseconds) |
+--- | --- | 
+6 vertices | 9.2 |
+7 vertices | 227 |
+8 vertices | 142,966 |
+
+The number of Minimum Spanning Trees in the algorithm.
+num of vertices | num of MSTs|
+--- | --- |
+6 vertices | 2,798 | 
+7 vertices | 485,668 | 
+8 vertices | 60,370,229 |
+
 ## Installation instruction for this algorithm. 
 
 Under the project directory, follow the instructions below to setup the environment for Branch and Bound visualization 
@@ -70,10 +88,6 @@ Install the package for deep cloning the graph.
 > npm install lodash
 
 Once you go through the installation instructions, you can open the jsgraph_BB_TSP_Visualization.html with Safari or Chrome web browser.
-
-## Discussion
-
-In this MST Branch and Bound algorithm, we only split into three branches no matter how many edges connected to the branching vertex, and the time complexity of this algorithm becomes exponential. As a result, it takes forever to run even a 9 vertices graph.
 
 
 ---
