@@ -1,0 +1,172 @@
+<html>
+    <head>
+        <title>
+                Traveling Salesmans Problem
+        </title>
+        <script src="./branchandBound_func.js" type="text/javascript"></script>
+        <script src="./randomGraph.js" type="text/javascript"></script>
+        <script src="../libs/lodash/lodash.min.js"></script>
+        <script src="../libs/vis.js" type="text/javascript" type = "module"></script>
+        <script src="../libs/jsgraphs.js" type="text/javascript"></script>
+        <script src="./branchandBound_func_test.js" type="text/javascript"></script>
+
+        <link href="../libs/vis.css" type="text/css" />
+        
+    </head>
+    
+    <body style = "background-color:#D7CCC8;">
+        <h2 style="font-family: monospace; font-size: 26px;text-align:center">Traveling Salesmans Problem using Branch and Bound with Minimum Spanning Tree</h2>
+        <p style="font-family: monospace; font-size: 20px;text-align:center">How many vertex you want in the random graph:</p>
+        <center><input style="font-family: monospace; padding: 10px; border:0; border-bottom:1px solid #eee; border-radius:10px;background-color: #ECEFF1; font-size:16px" type = "text" id="numofVertex" value = "6"/></center>
+        <br/>
+        <center><button onclick="creategraph()" id="numVertexbut" style="font-family: sens-serif; font-size: 13px;background-color: #BCAAA4; padding: 6px; border:0; border-radius:10px;" >Generate the graph</button></center>
+        <center><p id="solButton"></p></center>
+        <p id="t_cost" style="font-family: monospace; font-size: 16px;text-align:center">  </p>
+        <!--<p id="numofTree" style="font-family: monospace; font-size: 16px;text-align:center"></p>-->
+        <p id="exec_time" style="font-family: monospace; font-size: 16px;text-align:center">  </p>
+        <div style="font-family: monospace; font-size: 16px;text-align:center"><p id="tour_solution">  </p></div>
+
+        <div id="mynetwork"></div>
+        
+        <script type="text/javascript">
+            var g;
+            var g_nodes = [];
+            var g_edges = [];
+            /**
+             * @desc the function create the first random graph and visualize the it.
+             *      The part will only be executed by click "Generate the graph" button.
+             */ 
+            function runBB(){
+                let numofvertex = document.getElementById("numofVertex").value;
+                g = new jsgraphs.WeightedGraph(numofvertex);
+
+                g = randomgraph(g, numofvertex)
+                
+                // Visualization of the random graph
+                for(let v=0; v < g.V; ++v){
+                    g.node(v).label = 'Node ' + v; // assigned 'Node {v}' as label for node v
+                    g_nodes.push({
+                       id: v,
+                       label: g.node(v).label,
+                       color: '#8D6E63'
+                    });
+                }
+                for(let v = 0; v < g.V; ++v) {
+                    let adj_v = g.adj(v);
+                    for(let i = 0; i < adj_v.length; ++i) {
+                        let e = adj_v[i];
+                        let w = e.other(v);
+                        if(w > v) continue; // make sure only one edge between w and v since the graph is undirected
+                        if(e.highlighted) continue;
+                        
+                        g_edges.push({
+                            from: v,
+                            to: w,
+                            length: e.weight,
+                            label: '' + e.weight
+                        });
+                    };
+                }
+                                
+                let nodes = new vis.DataSet(g_nodes);
+                // create an array with edges
+                let edges = new vis.DataSet(g_edges);
+                // create a network
+                let container = document.getElementById('mynetwork');
+                let data = {
+                    nodes: nodes,
+                    edges: edges
+                };
+                let options = {};
+                let network = new vis.Network(container, data, options);
+            };
+            
+            /**
+             * @desc the function will create another "Find the tour" button and then execute the runBB() function. 
+             *       The function will only we executed after clicking the "Generate the grpah" button.
+             */
+            function creategraph(){
+                let solutionBut = document.createElement("button")
+                solutionBut.innerHTML="Find the tour";
+                solutionBut.addEventListener('click', findsolution)
+                solutionBut.setAttribute('style',"font-family: sens-serif; font-size: 13px;background-color: #BCAAA4; padding: 6px; border:0; border-radius:10px;")
+                document.getElementById("solButton").appendChild(solutionBut)
+                runBB();
+            }
+
+            /** 
+             * @desc the function will run the branch and bound algorithm to find the solution and visalize it. The function will be executed after the user hit the "Find the tour" button
+             *      Create the cost, execution time on html webpage and update the visualization to shows the solution tour.
+             */
+            function findsolution(){
+                let startTime = performance.now()
+                //Run branch and bound 
+                let tourcost;
+                let bb_tour;
+                let numofmst;
+                [bb_tour, tourcost, numofmst] = branchandBound(g)
+                let endTime = performance.now()
+                document.getElementById("t_cost").innerHTML = "The tour cost of the "+ document.getElementById("numofVertex").value +" vertices graph is " + tourcost;
+                document.getElementById("exec_time").innerHTML = "It takes " + (endTime - startTime) +" milliseconds to find the solution and generate " + numofmst + " MSTs";
+                let sol_edges = "The solution tour consist of the following edges:<br> ";
+                for(let a = 0; a < bb_tour.length;++a)
+                {
+                    sol_edges+=(bb_tour[a][0]+" - "+ bb_tour[a][1]+"<br>");
+                }
+                console.log(sol_edges)
+                document.getElementById("tour_solution").innerHTML = sol_edges;
+
+                //document.getElementById("numofTree").innerHTML = "It generates " + numofmst + " MSTs";
+                // Visualization of branch and bound solution
+                g_edges = [];
+                for(let i=0; i < bb_tour.length; ++i) {
+                    //let e = mst[i];
+                    let v = bb_tour[i][0];
+                    let w = bb_tour[i][1];
+                    let weight = g.edge(v,w).weight;
+                    //e.highlighted = true;
+                    g.adj(v)[w-1].highlighted = true; // avoid the duplicate edge
+                    //console.log('(' + v + ', ' + w + '): ' + weight);
+                    g_edges.push({
+                        from: v,
+                        to: w,
+                        length: weight,
+                        label: '' + weight,
+                        color: '#424242',
+                        value: 2
+                    });
+                }    
+                for(let v = 0; v < g.V; ++v) {
+
+                let adj_v = g.adj(v);
+                for(let i = 0; i < adj_v.length; ++i) {
+                    let e = adj_v[i];
+                    let w = e.other(v);
+                    if(w > v) continue; // make sure only one edge between w and v since the graph is undirected
+                    if(e.highlighted) continue;
+
+                    g_edges.push({
+                        from: v,
+                        to: w,
+                        length: e.weight,
+                        label: '' + e.weight
+                    });
+                };
+                }           
+                let nodes = new vis.DataSet(g_nodes);
+                // create an array with edges
+                let edges = new vis.DataSet(g_edges);
+                // create a network
+                let container = document.getElementById('mynetwork');
+                let data = {
+                    nodes: nodes,
+                    edges: edges
+                };
+                let options = {};
+                let network = new vis.Network(container, data, options);
+                TestingBB();
+
+            }
+        </script>
+    </body>
+</html>
