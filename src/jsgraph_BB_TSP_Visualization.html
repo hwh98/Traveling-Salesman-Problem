@@ -113,7 +113,6 @@
                 {
                     sol_edges+=(bb_tour[a][0]+" - "+ bb_tour[a][1]+"<br>");
                 }
-                console.log(sol_edges)
                 document.getElementById("tour_solution").innerHTML = sol_edges;
 
                 //document.getElementById("numofTree").innerHTML = "It generates " + numofmst + " MSTs";
@@ -126,7 +125,6 @@
                     let weight = g.edge(v,w).weight;
                     //e.highlighted = true;
                     g.adj(v)[w-1].highlighted = true; // avoid the duplicate edge
-                    //console.log('(' + v + ', ' + w + '): ' + weight);
                     g_edges.push({
                         from: v,
                         to: w,

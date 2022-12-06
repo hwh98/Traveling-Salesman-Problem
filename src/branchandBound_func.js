@@ -26,7 +26,6 @@ function branchandBound(bb_g){ //bb_g is the global original graph.
         var e = mst[i];
         var v = e.either();
         var w = e.other(v);
-        //console.log('(' + v + ', ' + w + '): ' + e.weight);
         mst_result.addEdge(w, v);
         mst_cost += e.weight;
     }
@@ -36,7 +35,6 @@ function branchandBound(bb_g){ //bb_g is the global original graph.
             // check tour, and the tour cost 
             let tourfinalcost = calculatetourcost(mst_result, mst_cost);
             if(tourfinalcost < glob_lowerbound){
-                //console.log("Update tour and cost.")
                 glob_lowerbound = tourfinalcost;// update tour
                 glob_tour = getTour(mst);
             }
@@ -54,7 +52,6 @@ function branchandBound(bb_g){ //bb_g is the global original graph.
         }
     }
     else{ // MST has more than one disconnected tree. Not a valid MST
-        //console.log("No solution for this graph.")
     }    
 
     return [glob_tour, glob_lowerbound, numofmstTree]
@@ -68,7 +65,6 @@ function branchandBound(bb_g){ //bb_g is the global original graph.
  * @returns 
  */
 function bbRecursion(recur_g, b_vertex, adjacent_vertex){
-    //console.log("branch edge "+ b_vertex + " - " + adjacent_vertex)
     let storeEdge = recur_g.edge(b_vertex,adjacent_vertex).weight;// record the removed edge's weight.
     recur_g.edge(b_vertex, adjacent_vertex).weight = Infinity;
 
@@ -79,25 +75,20 @@ function bbRecursion(recur_g, b_vertex, adjacent_vertex){
     let mst = kruskal.mst;
     let mst_result = new jsgraphs.Graph(recur_g.V);
     let mst_cost = 0;
-    //console.log("MST result - "+ mst.length+" edges generated in a " + recur_g.V +" vertexs graph.");
     for(var i=0; i < mst.length; ++i) { // iterate the MST edge to create the MST graph
         var e = mst[i];
         var v = e.either();
         var w = e.other(v);
-        //console.log('(' + v + ', ' + w + '): ' + e.weight);
         mst_result.addEdge(w, v);
         mst_cost += e.weight;
     }
     if (mst_cost!=Infinity){
-        //console.log("MST is still possible to have tour.");
         if(oneTreeMST){ // 
-            //console.log("MST generate one connected tree")
             //check if the MST result is a tour
             if(istour(mst_result)){ // if the MST path is a tour, we calculate the cost.
                 // check tour, and the tour cost 
                 let tourfinalcost = calculatetourcost(mst_result, mst_cost);
                 if(tourfinalcost < glob_lowerbound){
-                    //console.log("Update tour and cost.")
                     glob_lowerbound = tourfinalcost;// update tour
                     glob_tour = getTour(mst);
                 }
@@ -105,7 +96,6 @@ function bbRecursion(recur_g, b_vertex, adjacent_vertex){
                 return;
             }
             else{ // the MST edge is not a tour yet so we further branch
-                //console.log("------recusor branch");
                 let branchVertex;// dthe vertex we will branch on 
                 let adjacentVertex;// list of 3 adjacent vertexs connected to vertex
                 [branchVertex, adjacentVertex] = findBranchVertex(mst_result) // find the vertex we want to branch on
@@ -118,13 +108,11 @@ function bbRecursion(recur_g, b_vertex, adjacent_vertex){
             }
         }
         else{
-            //console.log("MST generate more than one disconnected tree");
             recur_g.edge(b_vertex, adjacent_vertex).weight = storeEdge; // reset the edge back
             return;
         }
     }
     else{
-        //console.log("infeasible MST")
         recur_g.edge(b_vertex, adjacent_vertex).weight = storeEdge; // reset the edge back
         return;
     }
@@ -146,12 +134,10 @@ function istour(fea_g){
                 onedegreevertex++;
             }
             else{
-                //console.log("The connected edge is not a tour.");
                 return false;    
             }
         }
     }
-    //console.log("The connected ege is a tour.");
     return true;// all existing edge is a tour.
 }
 
@@ -161,7 +147,6 @@ function istour(fea_g){
  * @returns {tourList} the list of tour EX: [ [ 1, 4 ], [ 1, 2 ], [ 3, 4 ], [ 0, 2 ], [ 0, 3 ] ]
  */
 function getTour(gett_g){
-    //console.log("Get the tour")
     let tourList = []
     let vertexFreq = new Array(parseInt(gett_g.length+1)).fill(0);// which two vertex is not connected by MST, we need it to form a tour.
     for(let i=0; i < gett_g.length; ++i) { // iterate the MST edge to create the MST graph
@@ -181,7 +166,6 @@ function getTour(gett_g){
     }
     tourList.push(indexof) // add the key 'unconnected' edge to the list
 
-    //console.log(tourList)//console.log('(' + v + ', ' + w + '): ' + e.weight);
     return tourList
 }
 
@@ -199,10 +183,8 @@ function getTour(gett_g){
     }
     edge_count = edge_count/2;
     if(edge_count < one_g.V - 1){ // the g might contain more than one MST tree.
-        //console.log("The graph of MST has multiple trees - not connected. WRONG MST");
         return false;
     }
-    //console.log("Valid MST. The graph of MST has only one connected tree.");
     return true;
 }
 
@@ -223,7 +205,6 @@ function calculatetourcost(mst_g, mst_cost){
         }
     }
     totalCost += origin_g.edge(waitingvertex[0],waitingvertex[1]).weight;
-    //console.log("The cost of this tour is "+ totalCost);
     return totalCost;
 }
 
@@ -247,7 +228,6 @@ function findBranchVertex(branch_g){
     if(adjacentvertex.length>3){ // if the vertex has more than three connected edge, we will only keep three, because we only want 3 branch.
         adjacentvertex = [0,1,2].map(e=>adjacentvertex[e])
     }
-    //console.log("so we will branch on vertex", branchingvertex);
 
     return [branchingvertex, adjacentvertex];
 }
