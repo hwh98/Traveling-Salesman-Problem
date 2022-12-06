@@ -6,7 +6,7 @@ Solving and visualizing the Traveling Salesman Problem using Branch and Bound al
 
 The branch and bound algorithm is based on the principle that we cut off the subset of the solution, e.g: feasible suboptimal solution, that is, the total set of feasible solutions is partitioned into smaller subset of solution. 
 The total number of possible solutions is reduced by the branching process, and the smaller subsets can then be evaluated systematically until the best solution is found. 
-At the heart of the method, we'll see one of the things we keep track of is the bound. We'll keep track of what a lower bound is or, in other words, the best solution could possibly be. And the bound guarantees that we can solve each sub-problem and find the global optimal. Generally speaking, the branching strategy and the bound calculation of the node can be obtained in any way. Here, we will use the Minimum Spanning Tree algorithm, which is able to yield an undirected path that connects all the vertices together at the lowest cost, to calculate the lower bound on the cost of the tour and the vertex with the highest degree is the one we branch on in the next step.
+At the heart of this bottom-up method, we'll see one of the things we keep track of is the bound. We'll keep track of what a lower bound is or, in other words, the best solution could possibly be. And the bound guarantees that we can solve each sub-problem and find the global optimal. Generally speaking, the branching strategy and the bound calculation of the node can be obtained in any way. Here, we will use the Minimum Spanning Tree algorithm to yield an undirected path that connects all the vertices together at the lowest cost and calculate the cost of the tour as lower bound, and the vertex with the highest degree is the one we branch on in the next step. 
 
 
 In summary, the branch and bound algorithm stepwise enumerates all the possible candidate solutions by exploring the search space by the means of a decision tree.
@@ -24,7 +24,7 @@ Our goal is to find a tour that visits all vertices once, the algorithm is descr
 implementation it’s implemented with recursion to simplify variables in the scope.
 
 ##
-Algorithm 2 MST Branch and Bound for TSP
+Algorithm MST Branch and Bound for TSP
 
 
 &nbsp; $C^\* := undefined$<br/>
@@ -49,7 +49,7 @@ Algorithm 2 MST Branch and Bound for TSP
 &nbsp; &nbsp; &nbsp; push $E'\setminus\{e_1}, E'\setminus\{e_2\}, E'\setminus\{e_3\}$ onto $S$<br/>
 &nbsp; **end while**<br/>
 
-### Installation instruction for this algorithm. 
+## Installation instruction for this algorithm. 
 
 Under the project directory, follow the instructions below to setup the environment for Branch and Bound visualization 
 
@@ -70,6 +70,11 @@ Install the package for deep cloning the graph.
 > npm install lodash
 
 Once you go through the installation instructions, you can open the jsgraph_BB_TSP_Visualization.html with Safari or Chrome web browser.
+
+## Discussion
+
+In this MST Branch and Bound algorithm, we only split into three branches no matter how many edges connected to the branching vertex, and the time complexity of this algorithm becomes exponential. As a result, it takes forever to run even a 9 vertices graph.
+
 
 ---
 ### **Reference and Sources**
