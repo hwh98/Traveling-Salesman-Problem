@@ -30,23 +30,23 @@ Algorithm 2 MST Branch and Bound for TSP
 &nbsp; $C^\* := undefined$<br/>
 &nbsp; $S:={E}$<br/>
 &nbsp; **while** $S \neq \emptyset$ **then**<br/>
-&nbsp; &nbsp; Take top $E' \in S$<br/>
-&nbsp; &nbsp; **if** $G(V,E')$ is disconnected **then**<br/>
-&nbsp; &nbsp; &nbsp; **continue** {Prune by infeasibility}<br/>
-&nbsp; &nbsp; **end if**<br/>
-&nbsp; &nbsp; Compute $M:=MST(E')**<br/>
-&nbsp; &nbsp; **if** $M$ is a spanning path **then**<br/>
-&nbsp; &nbsp; &nbsp; Let $T$ be the tour by joining the end points of the path $M$<br/>
-&nbsp; &nbsp; &nbsp; **if** $C(T) < C(C^\*)$ **then**<br/>
-&nbsp; &nbsp; &nbsp; &nbsp;  $C^\*:=T${New, bettwer tour found}<br/>
+&nbsp; &nbsp; &nbsp; Take top $E' \in S$<br/>
+&nbsp; &nbsp; &nbsp; **if** $G(V,E')$ is disconnected **then**<br/>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; **continue** {Prune by infeasibility}<br/>
 &nbsp; &nbsp; &nbsp; **end if**<br/>
-&nbsp; &nbsp; **end if**<br/>
-&nbsp; &nbsp; **if** $M$ is a path and $c(T) \ge c(C^\*)$ **then**<br/>
-&nbsp; &nbsp; &nbsp; **continute** {Pruned by sub-optimality}<br/>
-&nbsp; &nbsp; **end if**<br/>
-&nbsp; &nbsp; Let $v \subset V$ be a vertex incident to at least 3 edges in $T$<br/>
-&nbsp; &nbsp; Let $e_1, e_2, e_3 \subseteq \delta(V) \cap T$ be edges that are incident to $v$ in $T$<br/>
-&nbsp; &nbsp; push $E'\setminus\{e_1}, E'\setminus\{e_2\}, E'\setminus\{e_3\}$ onto $S$<br/>
+&nbsp; &nbsp; &nbsp; Compute $M:=MST(E')**<br/>
+&nbsp; &nbsp; &nbsp; **if** $M$ is a spanning path **then**<br/>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Let $T$ be the tour by joining the end points of the path $M$<br/>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; **if** $C(T) < C(C^\*)$ **then**<br/>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  $C^\*:=T${New, bettwer tour found}<br/>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; **end if**<br/>
+&nbsp; &nbsp; &nbsp; **end if**<br/>
+&nbsp; &nbsp; &nbsp; **if** $M$ is a path and $c(T) \ge c(C^\*)$ **then**<br/>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; **continute** {Pruned by sub-optimality}<br/>
+&nbsp; &nbsp; &nbsp; **end if**<br/>
+&nbsp; &nbsp; &nbsp; Let $v \subset V$ be a vertex incident to at least 3 edges in $T$<br/>
+&nbsp; &nbsp; &nbsp; Let $e_1, e_2, e_3 \subseteq \delta(V) \cap T$ be edges that are incident to $v$ in $T$<br/>
+&nbsp; &nbsp; &nbsp; push $E'\setminus\{e_1}, E'\setminus\{e_2\}, E'\setminus\{e_3\}$ onto $S$<br/>
 &nbsp; **end while**<br/>
 
 ### Installation instruction for this algorithm. 
