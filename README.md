@@ -48,9 +48,11 @@ Algorithm MST Branch and Bound for TSP
 &nbsp; &nbsp; &nbsp; Let $e_1, e_2, e_3 \subseteq \delta(V) \cap T$ be edges that are incident to $v$ in $T$<br/>
 &nbsp; &nbsp; &nbsp; push $E'\setminus\{e_1}, E'\setminus\{e_2\}, E'\setminus\{e_3\}$ onto $S$<br/>
 &nbsp; **end while**<br/>
+##
 
 In general, the algorithm has a complexity of $O(|E|\log(|E|)3^n)$. The exponential term comes from the tree search and the fact that TSP is NP-Complete, and the $|E|\log(|E|)$ is the complexity of the Kruskal MST algorithm. When the graph is full, say $n=|V|$, then the complexity of the algorithm becomes $O(n^2\log(n)3^n)$. Since we only split into three branches no matter how many edges connected to the  vertex, the time complexity of this algorithm becomes exponential.
 
+## Experiment
 I perform a simple experiment by creating the random graph and find the solution repeatedly, and the average of 4 experimental results are shown in the following tables. We notice that the execution time of the algorithm increases exponentially, and the 9 vertex graph takes forever to execute due to its exponential nature.
 
 The execution time of Branch and Bound algorithm.
@@ -67,25 +69,38 @@ num of vertices | num of MSTs|
 7 vertices | 485,668 | 
 8 vertices | 60,370,229 |
 
+## Visualiztion 
+
+![visualization example](./img/Visualization Example.png)
+After you generate the graph, you can interact with any vertex by dragging the whole graph or specific vertex, zoom in and out, and click on the vertex to highlight the vertices and edges.
+Once you **find the tour**, you can untangle the vertice and edges to check the tour as you like.
+
 ## Setup instruction for the visualization. 
 
 Under the project directory, follow the instructions below to setup the environment for Branch and Bound visualization 
 
-Install node.js, which includes NPM package manager for the javascript, from [here](https://nodejs.org/en/download/)
+Install ```node.js```, which includes NPM package manager for the javascript, from [here](https://nodejs.org/en/download/)
 
 For windows operating system, download the file and follow the instruction [here](https://phoenixnap.com/kb/install-node-js-npm-on-windows)
 
 For Mac user, you can either download the file and follow the [instruction](https://radixweb.com/blog/installing-npm-and-nodejs-on-windows-and-mac), or you can install it with homebrew.
-> brew install node
+```
+brew install node
+```
 
 After install the node.js, you can check if the NPM is also installed successfully by
-> npm version
-
+```
+npm version
+```
 Install the package for graph processing.
-> npm install js-graph-algorithms
+```
+npm install js-graph-algorithms
+```
 
 Install the package for deep cloning the graph.
-> npm install lodash
+```
+npm install lodash
+```
 
 Once you go through the installation instructions, you can open the jsgraph_BB_TSP_Visualization.html with Safari or Chrome web browser.
 
