@@ -67,7 +67,7 @@ num of vertices | num of MSTs|
 7 vertices | 485,668 | 
 8 vertices | 60,370,229 |
 
-## Installation instruction for this algorithm. 
+## Setup instruction for the visualization. 
 
 Under the project directory, follow the instructions below to setup the environment for Branch and Bound visualization 
 
@@ -90,8 +90,7 @@ Install the package for deep cloning the graph.
 Once you go through the installation instructions, you can open the jsgraph_BB_TSP_Visualization.html with Safari or Chrome web browser.
 
 
----
-### **Reference and Sources**
+## References and Sources
 
 
 Referenced library and package:
