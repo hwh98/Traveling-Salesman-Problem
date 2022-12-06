@@ -69,9 +69,10 @@ num of vertices | num of MSTs|
 7 vertices | 485,668 | 
 8 vertices | 60,370,229 |
 
-## Visualiztion 
+## Visualization 
 
-![visualization example](./img/Visualization Example.png)
+![visualization example](img/Visualization_Example.png)
+
 After you generate the graph, you can interact with any vertex by dragging the whole graph or specific vertex, zoom in and out, and click on the vertex to highlight the vertices and edges.
 Once you **find the tour**, you can untangle the vertice and edges to check the tour as you like.
 
